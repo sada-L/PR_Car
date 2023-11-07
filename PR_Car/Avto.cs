@@ -16,6 +16,11 @@ public class Avto
         _fuelMax = fuelMax;
         _fuelRate = fuelRate;
     }
+
+    void Info()
+    {
+        Console.WriteLine("Введите номер счета и имя: ");
+    }
     //Вывод информации
     void Out()
     {
