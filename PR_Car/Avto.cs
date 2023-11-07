@@ -17,7 +17,7 @@ public class Avto
         _fuelRate = fuelRate;
     }
     //Вывод информации
-    public void Out()
+    void Out()
     {
         Console.WriteLine
         ("--------------------------------\n" +
@@ -31,7 +31,7 @@ public class Avto
             _number,_fuelCount,_corA[0],_corA[1],_fuelMax,_fuelRate,_sumDistance);
     }
     //Заправка
-    public void Refill()
+    void Refill()
     {
         Console.Write("Сколько топлива заправить: ");
         double top = Convert.ToInt32(Console.ReadLine());
@@ -54,7 +54,7 @@ public class Avto
         }
     }
     //Цикл езды
-    public void Move()
+    void Move()
     {
         // Console.WriteLine("Ввидите расстояние: ");
         // double dis = Convert.ToInt32(Console.ReadLine());
