@@ -9,14 +9,6 @@ public class Avto
     private double _sumDistance; //пробег
     private List<int> _corA = new List<int>() {0,0}; //начальная координата
     private List<int> _corB;     //конечная координата
-    
-    public Avto(string number, double fuelCount, double fuelMax, double fuelRate)
-    {
-        _number = number;
-        _fuelCount = fuelCount;
-        _fuelMax = fuelMax;
-        _fuelRate = fuelRate;
-    }
     //Ввод информации
     void Info()
     {
@@ -87,10 +79,10 @@ public class Avto
                 }
                 else
                 {
-                    Console.Write("Вам не хватило топлива, хотите заправиться: ДА/НЕТ\n" +
-                                      ">");
+                    Console.Write("Вам не хватило топлива, хотите заправиться: +/-\n" +
+                                  ">");
                     string ans = Console.ReadLine();
-                    if (ans == "ДА")
+                    if (ans == "+")
                     {
                         dis -= _fuelCount / (_fuelRate / 100);
                         _fuelCount = 0;
@@ -130,14 +122,14 @@ public class Avto
         return Math.Round(c, 2);
     }
     //Метод "авария"
-    void Crash(List<Avto> allAvtos)
+    void Crash(Avto[] allAvtos)
     {
         Random random = new Random();
-        int ran1 = random.Next(0, allAvtos.Count);
-        int ran2 = random.Next(0, allAvtos.Count);
-        for (int i = 0; i < allAvtos.Count; i++)
+        int ran1 = random.Next(0, allAvtos.Length);
+        int ran2 = random.Next(0, allAvtos.Length);
+        for (int i = 0; i < allAvtos.Length; i++)
         {
-            for (int j = 0; j < allAvtos.Count; j++)
+            for (int j = 0; j < allAvtos.Length; j++)
             {
                 if (i != j)
                 { 
@@ -154,7 +146,7 @@ public class Avto
         }
     }
     //Пользовательский интерфейс
-    public void Menu(List<Avto> allAvtos)
+    public void Menu(Avto[] allAvtos)
     {
         while (true)
         {   
