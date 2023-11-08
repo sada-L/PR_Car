@@ -2,13 +2,14 @@
 
 public class Avto
 {
-    private string _number;
-    private double _fuelCount;
-    private double _fuelMax;
-    private double _fuelRate;
-    private double _sumDistance;
-    private List<int> _corA = new List<int>() {0,0}; 
-    private List<int> _corB;
+    private string _number;      //номер авто
+    private double _fuelCount;   //количество топлива
+    private double _fuelMax;     //максимум топлива
+    private double _fuelRate;    //расход на 100 км
+    private double _sumDistance; //пробег
+    private List<int> _corA = new List<int>() {0,0}; //начальная координата
+    private List<int> _corB;     //конечная координата
+    
     public Avto(string number, double fuelCount, double fuelMax, double fuelRate)
     {
         _number = number;
@@ -16,10 +17,15 @@ public class Avto
         _fuelMax = fuelMax;
         _fuelRate = fuelRate;
     }
-
+    //Ввод информации
     void Info()
     {
-        Console.WriteLine("Введите номер счета и имя: ");
+        Console.Write("Введите номер, объём бака, рассход топлива\n" +
+                      ">");
+        string[] s =Console.ReadLine().Split(' ',',',';');
+        _number = s[0];
+        _fuelMax = Convert.ToDouble(s[1]);
+        _fuelRate = Convert.ToDouble(s[2]);
     }
     //Вывод информации
     void Out()
@@ -116,10 +122,7 @@ public class Avto
         _corB = new List<int>();
         Console.Write("Введите координаты: ");
         string[] s = Console.ReadLine().Split(',');
-        foreach (string s2 in s)
-        {
-            _corB.Add(Int32.Parse(s2));
-        }
+        foreach (string s2 in s) {_corB.Add(Int32.Parse(s2));}
         double c = Math.Sqrt(
             Math.Pow(_corB[0] - _corA[0], 2) +
             Math.Pow(_corB[1] - _corA[1], 2)
@@ -159,6 +162,7 @@ public class Avto
             Console.Write
             ("--------------------------------\n" +
              "Выберете необходимое действие:\n" +
+             "0. Ввод данных\n" +
              "1. Показать данные авто\n" +
              "2. Заправиться\n" +
              "3. Передвижение\n" +
@@ -166,6 +170,7 @@ public class Avto
              ">");
             switch (Convert.ToInt32(Console.ReadLine()))
             {
+                case 0: Info(); break;
                 case 1: Out(); break;
                 case 2: Refill(); break;
                 case 3: Move(); break;
