@@ -9,7 +9,16 @@ public class Avto
     private double _sumDistance; //пробег
     private List<int> _corA = new List<int>() {0,0}; //начальная координата
     private List<int> _corB;     //конечная координата
+
+    public string Number
+    {
+        get { return _number; }
+    }
     //Ввод информации
+    public Avto()
+    {
+        Info();
+    }
     void Info()
     {
         Console.Write("Введите номер, объём бака, рассход топлива\n" +
@@ -36,24 +45,27 @@ public class Avto
     //Заправка
     void Refill()
     {
-        Console.Write("Сколько топлива заправить: ");
-        double top = Convert.ToInt32(Console.ReadLine());
-        if (top >= 0)
+        bool exit = true;
+        while (exit)
         {
-            if (top + _fuelCount <= _fuelMax)
+            Console.Write("Сколько топлива заправить: ");
+            double top = Convert.ToInt32(Console.ReadLine());
+            if (top >= 0)
             {
-                _fuelCount += top;
+                if (top + _fuelCount <= _fuelMax)
+                {
+                    _fuelCount += top;
+                    exit = false;
+                }
+                else
+                {
+                    Console.WriteLine("Невозможно заправить больше максимума, попробуйте еще раз");
+                }
             }
             else
             {
-                Console.WriteLine("Невозможно заправить больше максимума, попробуйте еще раз");
-                Refill();
+                Console.WriteLine("Неверный формат ввода, попробуйте еще раз");
             }
-        }
-        else
-        {
-            Console.WriteLine("Неверный формат ввода, попробуйте еще раз");
-            Refill();
         }
     }
     //Цикл езды
@@ -63,43 +75,35 @@ public class Avto
         // double dis = Convert.ToInt32(Console.ReadLine());
         double dis = Distance();
         double prob = dis;
-        if (dis > 0)
+        while (true)
         {
-            while (true)
+            double rem = Remains(dis);
+            if (rem <= _fuelCount)
             {
-                double rem = Remains(dis);
-                if (rem <= _fuelCount)
+                _fuelCount -= rem;
+                _corA = _corB;
+                _sumDistance += prob;
+                Console.WriteLine("Вы проехали: {0:f} км, топлива осталось: {1:f} л, местоположение: {2},{3}",
+                    prob,_fuelCount,_corA[0],_corB[1]);
+                return;
+            }
+            else
+            {
+                Console.Write("Вам не хватило топлива, хотите заправиться: +/-\n" +
+                              ">");
+                string ans = Console.ReadLine();
+                if (ans == "+")
                 {
-                    _fuelCount -= rem;
-                    _corA = _corB;
-                    _sumDistance += prob;
-                    Console.WriteLine("Вы проехали: {0:f} км, топлива осталось: {1:f} л, местоположение: {2},{3}",
-                        prob,_fuelCount,_corA[0],_corB[1]);
-                    return;
+                    dis -= _fuelCount / (_fuelRate / 100);
+                    _fuelCount = 0;
+                    Refill();
                 }
                 else
                 {
-                    Console.Write("Вам не хватило топлива, хотите заправиться: +/-\n" +
-                                  ">");
-                    string ans = Console.ReadLine();
-                    if (ans == "+")
-                    {
-                        dis -= _fuelCount / (_fuelRate / 100);
-                        _fuelCount = 0;
-                        Refill();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Вы заглохли");
-                        return;
-                    }
+                    Console.WriteLine("Вы заглохли");
+                    return;
                 }
             }
-        }
-        else
-        {
-            Console.WriteLine("Неверный формат ввода, попробуйте еще раз");
-            Move();
         }
     }
     //Остаток топлива
@@ -113,7 +117,7 @@ public class Avto
     {
         _corB = new List<int>();
         Console.Write("Введите координаты: ");
-        string[] s = Console.ReadLine().Split(',');
+        string[] s = Console.ReadLine().Split(',',' ',';');
         foreach (string s2 in s) {_corB.Add(Int32.Parse(s2));}
         double c = Math.Sqrt(
             Math.Pow(_corB[0] - _corA[0], 2) +
@@ -122,22 +126,23 @@ public class Avto
         return Math.Round(c, 2);
     }
     //Метод "авария"
-    void Crash(Avto[] allAvtos)
+    void Crash(List<Avto> allAvtos)
     {
         Random random = new Random();
-        int ran1 = random.Next(0, allAvtos.Length);
-        int ran2 = random.Next(0, allAvtos.Length);
-        for (int i = 0; i < allAvtos.Length; i++)
+        int ran1 = random.Next(0, allAvtos.Count);
+        int ran2 = random.Next(0, allAvtos.Count);
+        for (int i = 0; i < allAvtos.Count; i++)
         {
-            for (int j = 0; j < allAvtos.Length; j++)
+            for (int j = 0; j < allAvtos.Count; j++)
             {
                 if (i != j)
                 { 
                     if (allAvtos[i]._corA[0] == allAvtos[j]._corA[0] && 
                         allAvtos[i]._corA[1] == allAvtos[j]._corA[1])
                     {
-                        allAvtos[i] = allAvtos[ran1];
-                        allAvtos[j] = allAvtos[ran2];
+                        /*allAvtos[i] = allAvtos[ran1];
+                        allAvtos[j] = allAvtos[ran2];*/
+                        Console.WriteLine("CRASH!!!");
                         /*Console.WriteLine(allAvtos[i]._number);
                         Console.WriteLine(allAvtos[j]._number);*/
                     }
@@ -146,7 +151,7 @@ public class Avto
         }
     }
     //Пользовательский интерфейс
-    public void Menu(Avto[] allAvtos)
+    public void Menu(List<Avto> allAvtos)
     {
         while (true)
         {   
