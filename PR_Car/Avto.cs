@@ -92,10 +92,12 @@ public class Avto
                 Console.Write("Вам не хватило топлива, хотите заправиться: +/-\n" +
                               ">");
                 string ans = Console.ReadLine();
+                
                 if (ans == "+")
                 {
                     dis -= _fuelCount / (_fuelRate / 100);
                     _fuelCount = 0;
+                    Console.WriteLine($"Топливо кончилось, вы проехали: {prob - dis}км");
                     Refill();
                 }
                 else
@@ -159,7 +161,7 @@ public class Avto
             Console.Write
             ("--------------------------------\n" +
              "Выберете необходимое действие:\n" +
-             "0. Ввод данных\n" +
+             //"0. Ввод данных\n" +
              "1. Показать данные авто\n" +
              "2. Заправиться\n" +
              "3. Передвижение\n" +
@@ -167,7 +169,7 @@ public class Avto
              ">");
             switch (Convert.ToInt32(Console.ReadLine()))
             {
-                case 0: Info(); break;
+                //case 0: Info(); break;
                 case 1: Out(); break;
                 case 2: Refill(); break;
                 case 3: Move(); break;

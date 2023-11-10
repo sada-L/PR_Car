@@ -5,6 +5,7 @@ public class AvtoStore
 {
     private List<Avto> _acc = new List<Avto>();
     public List<Avto> Acc
+    
     {
         get { return _acc; }
     }
