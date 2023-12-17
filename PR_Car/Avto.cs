@@ -7,19 +7,18 @@ public class Avto {
     protected double _sumDistance; //пробег
     protected int[] _corA = new int[] {0,0}; //начальная координата
     protected int[] _corB;         //конечная координата
-    protected int _speed;
-    protected int _speedMax = 180;
+    protected double _speed;
+    protected double _speedMax = 180;
     public string Number { get { return _number; } }
     //Ввод информации
     public Avto() => Info();
     protected void Info() {
         while (true) {
             try {
-                Console.Write("Введите номер, объём бака, рассход топлива\n" + ">");
+                Console.Write("Введите номер, объём бака\n" + ">");
                 string[] s =Console.ReadLine().Split(' ',',',';');
                 _number = s[0];
                 _fuelMax = Convert.ToDouble(s[1]);
-                _fuelRate = Convert.ToDouble(s[2]);
                 return;
             }
             catch (Exception e) { Console.WriteLine(e); }
@@ -53,8 +52,7 @@ public class Avto {
     }
     //Цикл езды
     protected virtual void Move() {
-        // Console.WriteLine("Ввидите расстояние: ");
-        // double dis = Convert.ToInt32(Console.ReadLine());
+        SpeedDeterm();
         double dis = Distance();
         double prob = dis;
         while (true) {
@@ -63,8 +61,9 @@ public class Avto {
                 _fuelCount -= rem;
                 _corA = _corB;
                 _sumDistance += prob;
-                Console.WriteLine("Вы проехали: {0:f} км, топлива осталось: {1:f} л, местоположение: {2},{3}",
-                    prob,_fuelCount,_corA[0],_corB[1]);
+                Console.WriteLine("Вы проехали: {0:f} км, топлива осталось: {1:f} л, местоположение: {2},{3}, скорость: {4}",
+                    prob,_fuelCount,_corA[0],_corB[1],_speed);
+                _speed = 0;
                 return;
             }
             else {
@@ -81,6 +80,23 @@ public class Avto {
         }
     }
     //Остаток топлива
+    protected virtual void SpeedDeterm() {
+        while (true) {
+            Console.Write("Введите с какой скоростью поедете: ");
+            int speed = Convert.ToInt32(Console.ReadLine());
+            if (speed > 0) {
+                if (speed <= 45) {
+                    _fuelRate = 12; return;
+                } else if (speed > 46 && speed <= 100) {
+                    _fuelRate = 9; return;
+                } else if (speed > 101 && speed <= _speedMax) { 
+                    _fuelRate = 12.5; return;
+                } else Console.WriteLine("Невозможно ехать с такой скоротью");
+            } else Console.WriteLine("Невозможно ехать с такой скоротью");
+
+            _speed = speed;
+        }
+    }
     protected double Remains(double dis) => Math.Round(_fuelRate / 100 * dis, 2);
     
     //Расчет дистанции 
