@@ -7,8 +7,6 @@ public class Avto {
     protected double _sumDistance; //пробег
     protected int[] _corA = new int[] {0,0}; //начальная координата
     protected int[] _corB;         //конечная координата
-    protected double _speed;
-    protected double _speedMax = 180;
     public string Number { get { return _number; } }
     //Ввод информации
     public Avto() => Info();
@@ -25,17 +23,16 @@ public class Avto {
         }
     }
     //Вывод информации
-    protected void Out() {
+    protected virtual void Out() {
         Console.WriteLine
         ("--------------------------------\n" +
          "Номер: {0}\n" +
          "Толпиво: {1:f}\n" +
          "Местоположение: {2},{3}\n" +
          "Максимум топлива: {4}\n" +
-         "Рассход на 100 км: {5}\n" +
-         "Суммарный пробег: {6:f}\n" +
+         "Суммарный пробег: {5:f}\n" +
          "--------------------------------", 
-            _number,_fuelCount,_corA[0],_corA[1],_fuelMax,_fuelRate,_sumDistance);
+            _number,_fuelCount,_corA[0],_corA[1],_fuelMax,_sumDistance);
     }
     //Заправка
     protected void Refill() {
@@ -61,9 +58,8 @@ public class Avto {
                 _fuelCount -= rem;
                 _corA = _corB;
                 _sumDistance += prob;
-                Console.WriteLine("Вы проехали: {0:f} км, топлива осталось: {1:f} л, местоположение: {2},{3}, скорость: {4}",
-                    prob,_fuelCount,_corA[0],_corB[1],_speed);
-                _speed = 0;
+                Console.WriteLine("Вы проехали: {0:f} км, топлива осталось: {1:f} л, местоположение: {2},{3}",
+                    prob,_fuelCount,_corA[0],_corB[1]);
                 return;
             }
             else {
@@ -89,12 +85,10 @@ public class Avto {
                     _fuelRate = 12; return;
                 } else if (speed > 46 && speed <= 100) {
                     _fuelRate = 9; return;
-                } else if (speed > 101 && speed <= _speedMax) { 
+                } else if (speed > 101 && speed <= 180) { 
                     _fuelRate = 12.5; return;
                 } else Console.WriteLine("Невозможно ехать с такой скоротью");
             } else Console.WriteLine("Невозможно ехать с такой скоротью");
-
-            _speed = speed;
         }
     }
     protected double Remains(double dis) => Math.Round(_fuelRate / 100 * dis, 2);

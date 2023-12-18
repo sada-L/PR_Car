@@ -1,26 +1,40 @@
 ﻿namespace PR_Car;
 
 public class Truck : Avto {
-    private int _weight;
-    private int _weightMax = 2000;
-    private double _kf;
+    private int _weight;            //вес груза
+    private int _weightMax = 2000;  //максимальный вес
+    private double _kf;             //Коэффициент расхода топлива
+    //вывод информации
+    protected override void Out() {
+        Console.WriteLine
+        ("--------------------------------\n" +
+         "Номер: {0}\n" +
+         "Толпиво: {1:f}\n" +
+         "Местоположение: {2},{3}\n" +
+         "Максимум топлива: {4}\n" +
+         "Суммарный пробег: {5:f}\n" +
+         "Вес груза: {6:f}\n" +
+         "--------------------------------", 
+            _number,_fuelCount,_corA[0],_corA[1],_fuelMax,_sumDistance,_weight);
+    }
+    //движение до точки
     private void MoveToPlace() {
         if (_weight >= 100 && _weight < 1000) { 
             _kf = 0.4; 
         } else if (_weight >= 1000 && _weight <= 2000) {
             _kf = 0.8; 
         }
-        SpeedDeterm();
         double dis = DistanceToPlace();
         double prob = dis;
+        SpeedDeterm();
         while (true) {
             double rem = Remains(dis);
             if (rem <= _fuelCount) {
                 _fuelCount -= rem;
                 _corA = _corB;
                 _sumDistance += prob;
-                Console.WriteLine("Вы проехали: {0:f} км, топлива осталось: {1:f} л, местоположение: {2},{3}",
-                    prob,_fuelCount,_corA[0],_corB[1]);
+                Console.WriteLine("Вы проехали: {0:f} км, топлива осталось: {1:f} л, местоположение: {2},{3}, расcход: {4}",
+                    prob,_fuelCount,_corA[0],_corB[1],_fuelRate);
                 return;
             } 
             else {
@@ -39,7 +53,7 @@ public class Truck : Avto {
             }
         }
     }
-
+    //рассчет расхода относительно скорости
     protected override void SpeedDeterm() {
         while (true) {
             Console.Write("Введите с какой скоростью поедете: ");
@@ -50,13 +64,13 @@ public class Truck : Avto {
                     _fuelRate = 12; return;
                 } else if (speed > 46 && speed <= 100) {
                     _fuelRate = 9; return;
-                } else if (speed > 101 && speed <= _speedMax) { 
+                } else if (speed > 101 && speed <= 180) { 
                     _fuelRate = 12.5; return;
                 } else Console.WriteLine("Невозможно ехать с такой скоротью");
             } else Console.WriteLine("Невозможно ехать с такой скоротью");
         }
     }
-
+    //цикл движения
     protected override void Move() {
         while (true)
         {
@@ -71,6 +85,7 @@ public class Truck : Avto {
                 return;
         }
     }
+    //погрузка
     private void Loading() {
         while (true) {
             Console.Write("Введите вес груза для погрузки: ");
@@ -83,6 +98,7 @@ public class Truck : Avto {
             else Console.WriteLine("Груз не может иметь отрицательный вес");
         }
     }
+    //разгрузка
     private void Unloading() {
         while (true) {
             Console.Write("Введите вес груза для разгрузки: ");
@@ -95,6 +111,7 @@ public class Truck : Avto {
             else Console.WriteLine("Груз не может иметь отрицательный вес");
         }
     }
+    //рассчет расстояния до точки
     private double DistanceToPlace() {
         while (true) {
             try {
@@ -108,7 +125,7 @@ public class Truck : Avto {
             catch (Exception e) { Console.WriteLine(e); }
         }
     }
-
+    //интрефейс
     public override void Menu(List<Avto> allAvtos) {
         while (true) {  
             Console.Write
