@@ -1,9 +1,6 @@
 ﻿namespace PR_Car;
 
 public class Truck : Avto {
-    private int _weight;            //вес груза
-    private int _weightMax = 2000;  //максимальный вес
-    private double _kf;             //Коэффициент расхода топлива
     //вывод информации
     protected override void Out() {
         Console.WriteLine
@@ -72,8 +69,7 @@ public class Truck : Avto {
     }
     //цикл движения
     protected override void Move() {
-        while (true)
-        {
+        while (true) {
             Console.Write("Введите координаты места погрузки: ");
             MoveToPlace();
             Loading();

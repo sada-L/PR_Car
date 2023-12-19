@@ -7,6 +7,9 @@ public class Avto {
     protected double _sumDistance; //пробег
     protected int[] _corA = new int[] {0,0}; //начальная координата
     protected int[] _corB;         //конечная координата
+    protected int _weight;         //вес груза
+    protected int _weightMax=2000; //максимальный вес
+    protected double _kf;          //Коэффициент расхода топлива
     public string Number { get { return _number; } }
     //Ввод информации
     public Avto() => Info();
